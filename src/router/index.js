@@ -2,7 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router';
 import LoginView from '../views/LoginView.vue';  
 import CatalogoView from '../views/CatalogoView.vue';
 import AdminView from '../views/AdminView.vue';
-import ClienteView from '../views/ClienteView.vue';  // Importa la vista del cliente
+import ClienteView from '../views/ClienteView.vue';
+import BodegueroView from '../views/BodegueroView.vue';  // Importa la vista de bodeguero
+import ContadorView from '../views/ContadorView.vue';  // Importa la vista de contador
 import NotFound from '../views/NotFound.vue';
 
 const router = createRouter({
@@ -30,10 +32,22 @@ const router = createRouter({
       meta: { requiresAuth: true, role: 'admin' }
     },
     {
-      path: '/cliente',  
+      path: '/cliente',
       name: 'cliente',
       component: ClienteView,
-      meta: { requiresAuth: true, role: 'cliente' }  // Definir que solo los clientes pueden acceder
+      meta: { requiresAuth: true, role: 'cliente' }
+    },
+    {
+      path: '/bodeguero',  // Nueva ruta para bodeguero
+      name: 'bodeguero',
+      component: BodegueroView,
+      meta: { requiresAuth: true, role: 'bodeguero' }  // Solo accesible para el rol bodeguero
+    },
+    {
+      path: '/contador',  // Nueva ruta para contador
+      name: 'contador',
+      component: ContadorView,
+      meta: { requiresAuth: true, role: 'contador' } 
     },
     {
       path: '/:pathMatch(.*)*',
@@ -60,3 +74,4 @@ router.beforeEach((to, from, next) => {
 });
 
 export default router;
+

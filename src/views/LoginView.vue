@@ -24,11 +24,12 @@
       </div>
       <button type="submit">Iniciar sesión</button>
     </form>
-
-    <!-- Toast -->
-    <div v-if="showToast" class="toast">{{ toastMessage }}</div>
-
     <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+    
+    <!-- Toast -->
+    <div v-if="showToast" class="toast">
+      <p>{{ toastMessage }}</p>
+    </div>
   </div>
 </template>
 
@@ -40,45 +41,84 @@ export default {
       email: "",
       password: "",
       errorMessage: "",
-      showToast: false, // Para poder controlar la visibilidad del toast
-      toastMessage: "",
-      userRole: "", // Variable para manejar el rol del usuario
+      showToast: false,
+      toastMessage: ""
     };
   },
   methods: {
     handleLogin() {
-      // Simulando un login exitoso con roles específicos
+      // Simulando un login con roles 
       if (this.email === "admin@empresa.com" && this.password === "admin123") {
-        this.userRole = "admin"; // Asignamos el rol de administrador
-        this.toastMessage = "Inicio de sesión como Administrador correctamente";
-      } else if (this.email === "vendedor@empresa.com" && this.password === "vendedor123") {
-        this.userRole = "vendedor"; // Asignamos el rol de vendedor
-        this.toastMessage = "Inicio de sesión como Vendedor correctamente";
-      } else if (this.email === "cliente@empresa.com" && this.password === "cliente123") {
-        this.userRole = "cliente"; // Asignamos el rol de cliente
-        this.toastMessage = "Inicio de sesión como Cliente correctamente";
-      } else {
-        this.errorMessage = "Correo o contraseña incorrectos"; // Mostrar error
-        return;
-      }
-
-      this.showToast = true; // Mostrando el toast
-      setTimeout(() => {
-        this.showToast = false; // Ocultar el toast después de 3 segundos
-
-        // Guardamos el estado de login y rol en localStorage
+        // Guardar estado de login y rol en localStorage
         localStorage.setItem("loggedIn", true);
-        localStorage.setItem("userRole", this.userRole);
+        localStorage.setItem("userRole", "admin");
+        this.userRole = "admin"; // Asignando el rol al usuario
 
-        // Redirigir según el rol del usuario
-        if (this.userRole === "admin") {
-          this.$router.push("/admin"); // Redirigir al panel de administración
-        } else if (this.userRole === "vendedor" || this.userRole === "cliente") {
-          this.$router.push("/catalogo"); // Redirigir al catálogo
-        }
-      }, 100);
-    },
-  },
+        // Redirigiendo inmediatamente después del login
+        this.$router.push("/admin");
+
+        // Mostrando el toast con retraso
+        this.toastMessage = "Inicio de sesión exitoso como Administrador";
+        setTimeout(() => {
+          this.showToast = true;
+        }, 3000); // Aparecerá después de 3 segundos
+      } else if (this.email === "vendedor@empresa.com" && this.password === "vendedor123") {
+        localStorage.setItem("loggedIn", true);
+        localStorage.setItem("userRole", "vendedor");
+        this.userRole = "vendedor"; // Asignar el rol al usuario
+
+        // Redirige inmediatamente después del login
+        this.$router.push("/catalogo");
+
+        // Mostramos el toast con retraso
+        this.toastMessage = "Inicio de sesión exitoso como Vendedor";
+        setTimeout(() => {
+          this.showToast = true;
+        }, 3000); // Aparecerá después de 3 segundos
+      } else if (this.email === "cliente@empresa.com" && this.password === "cliente123") {
+        localStorage.setItem("loggedIn", true);
+        localStorage.setItem("userRole", "cliente");
+        this.userRole = "cliente"; // Asignamos el rol al usuario
+
+        // Redirigimos inmediatamente después del login
+        this.$router.push("/catalogo");
+
+        // Mostrando el toast con retraso
+        this.toastMessage = "Inicio de sesión exitoso como Cliente";
+        setTimeout(() => {
+          this.showToast = true;
+        }, 2000); // Aparecerá después de 3 segundos
+      } else if (this.email === "bodeguero@empresa.com" && this.password === "bodeguero123") {
+        localStorage.setItem("loggedIn", true);
+        localStorage.setItem("userRole", "bodeguero");
+        this.userRole = "bodeguero"; 
+
+        
+        this.$router.push("/bodeguero");
+
+        // Mostrar el toast con retraso
+        this.toastMessage = "Inicio de sesión exitoso como Bodeguero";
+        setTimeout(() => {
+          this.showToast = true;
+        }, 3000); 
+      } else if (this.email === "contador@empresa.com" && this.password === "contador123") {
+        localStorage.setItem("loggedIn", true);
+        localStorage.setItem("userRole", "contador");
+        this.userRole = "contador"; // Asignar el rol al usuario
+
+        
+        this.$router.push("/contador");
+
+        
+        this.toastMessage = "Inicio de sesión exitoso como Contador";
+        setTimeout(() => {
+          this.showToast = true;
+        }, 3000); 
+      } else {
+        this.errorMessage = "Correo o contraseña incorrectos"; // Mostrará el mensaje de error
+      }
+    }
+  }
 };
 </script>
 
@@ -135,21 +175,17 @@ button:hover {
   margin-top: 1rem;
 }
 
-/* Estilos del Toast */
+/* Estilos para el toast */
 .toast {
   position: fixed;
-  top: 50%;
+  top: 20px;
   left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 1rem;
+  transform: translateX(-50%);
   background-color: #28a745;
   color: white;
-  font-size: 1.2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
 }
 </style>

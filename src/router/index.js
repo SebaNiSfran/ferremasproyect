@@ -1,23 +1,55 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import LoginView from '../views/LoginView.vue';  
+import CatalogoView from '../views/CatalogoView.vue';
+import AdminView from '../views/AdminView.vue';
+import NotFound from '../views/NotFound.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: HomeView,
+      path: '/', // Ruta raíz
+      redirect: '/login' 
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue'),
+      path: '/login',
+      name: 'login',
+      component: LoginView,
+    },
+    {
+      path: '/catalogo',
+      name: 'catalogo',
+      component: CatalogoView,
+      meta: { requiresAuth: true, role: 'vendedor' }  // Definir qué roles necesitan estar logueados
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: AdminView,
+      meta: { requiresAuth: true, role: 'admin' }
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: NotFound,
     },
   ],
-})
+});
 
-export default router
+// Guard para proteger las rutas que necesitan autenticación
+router.beforeEach((to, from, next) => {
+  const loggedIn = localStorage.getItem('loggedIn');
+  const userRole = localStorage.getItem('userRole');
+  
+  // Si la ruta requiere autenticación y el usuario no está logueado
+  if (to.meta.requiresAuth && !loggedIn) {
+    next('/login');  // Redirigir al login
+  } else if (to.meta.role && to.meta.role !== userRole) {
+    // Si el rol no coincide con la ruta, redirigir a la página correspondiente
+    next(`/${userRole}`);
+  } else {
+    next();  // Continuar normalmente
+  }
+});
+
+export default router;

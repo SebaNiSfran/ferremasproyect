@@ -40,7 +40,7 @@ export default {
       email: "",
       password: "",
       errorMessage: "",
-      showToast: false, // Para controlar la visibilidad del toast
+      showToast: false, // Para poder controlar la visibilidad del toast
       toastMessage: "",
       userRole: "", // Variable para manejar el rol del usuario
     };
@@ -49,24 +49,24 @@ export default {
     handleLogin() {
       // Simulando un login exitoso con roles específicos
       if (this.email === "admin@empresa.com" && this.password === "admin123") {
-        this.userRole = "admin"; // Asignar el rol de administrador
+        this.userRole = "admin"; // Asignamos el rol de administrador
         this.toastMessage = "Inicio de sesión como Administrador correctamente";
       } else if (this.email === "vendedor@empresa.com" && this.password === "vendedor123") {
-        this.userRole = "vendedor"; // Asignar el rol de vendedor
+        this.userRole = "vendedor"; // Asignamos el rol de vendedor
         this.toastMessage = "Inicio de sesión como Vendedor correctamente";
       } else if (this.email === "cliente@empresa.com" && this.password === "cliente123") {
-        this.userRole = "cliente"; // Asignar el rol de cliente
+        this.userRole = "cliente"; // Asignamos el rol de cliente
         this.toastMessage = "Inicio de sesión como Cliente correctamente";
       } else {
         this.errorMessage = "Correo o contraseña incorrectos"; // Mostrar error
         return;
       }
 
-      this.showToast = true; // Mostrar el toast
+      this.showToast = true; // Mostrando el toast
       setTimeout(() => {
         this.showToast = false; // Ocultar el toast después de 3 segundos
 
-        // Guardar el estado de login y rol en localStorage
+        // Guardamos el estado de login y rol en localStorage
         localStorage.setItem("loggedIn", true);
         localStorage.setItem("userRole", this.userRole);
 

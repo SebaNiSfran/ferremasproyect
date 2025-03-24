@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import LoginView from '../views/LoginView.vue';  
 import CatalogoView from '../views/CatalogoView.vue';
 import AdminView from '../views/AdminView.vue';
+import ClienteView from '../views/ClienteView.vue';  // Importa la vista del cliente
 import NotFound from '../views/NotFound.vue';
 
 const router = createRouter({
@@ -29,6 +30,12 @@ const router = createRouter({
       meta: { requiresAuth: true, role: 'admin' }
     },
     {
+      path: '/cliente',  
+      name: 'cliente',
+      component: ClienteView,
+      meta: { requiresAuth: true, role: 'cliente' }  // Definir que solo los clientes pueden acceder
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'not-found',
       component: NotFound,
@@ -48,7 +55,7 @@ router.beforeEach((to, from, next) => {
     // Si el rol no coincide con la ruta, redirigir a la página correspondiente
     next(`/${userRole}`);
   } else {
-    next();  // Continuar normalmente
+    next();  // Continua normalmente
   }
 });
 

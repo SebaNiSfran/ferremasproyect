@@ -8,6 +8,5 @@
 <script>
 export default {
   name: 'AdminView',
-  // Lógica del componente (puede estar vacía si no tienes nada por ahora)
 }
 </script>

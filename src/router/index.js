@@ -3,8 +3,9 @@ import LoginView from '../views/LoginView.vue';
 import CatalogoView from '../views/CatalogoView.vue';
 import AdminView from '../views/AdminView.vue';
 import ClienteView from '../views/ClienteView.vue';
-import BodegueroView from '../views/BodegueroView.vue';  // Importa la vista de bodeguero
-import ContadorView from '../views/ContadorView.vue';  // Importa la vista de contador
+import BodegueroView from '../views/BodegueroView.vue';
+import ContadorView from '../views/ContadorView.vue';
+import CarritoView from '../views/CarritoView.vue';  // Importa la vista de carrito
 import NotFound from '../views/NotFound.vue';
 
 const router = createRouter({
@@ -23,7 +24,7 @@ const router = createRouter({
       path: '/catalogo',
       name: 'catalogo',
       component: CatalogoView,
-      meta: { requiresAuth: true, role: 'vendedor' }  // Definir qué roles necesitan estar logueados
+      meta: { requiresAuth: true, role: 'vendedor' }
     },
     {
       path: '/admin',
@@ -38,16 +39,22 @@ const router = createRouter({
       meta: { requiresAuth: true, role: 'cliente' }
     },
     {
-      path: '/bodeguero',  // Nueva ruta para bodeguero
+      path: '/bodeguero',
       name: 'bodeguero',
       component: BodegueroView,
-      meta: { requiresAuth: true, role: 'bodeguero' }  // Solo accesible para el rol bodeguero
+      meta: { requiresAuth: true, role: 'bodeguero' }
     },
     {
-      path: '/contador',  // Nueva ruta para contador
+      path: '/contador',
       name: 'contador',
       component: ContadorView,
       meta: { requiresAuth: true, role: 'contador' } 
+    },
+    {
+      path: '/carrito',  // Nueva ruta para carrito
+      name: 'carrito',
+      component: CarritoView,
+      meta: { requiresAuth: true }  // Opcional: requiere autenticación
     },
     {
       path: '/:pathMatch(.*)*',
@@ -74,4 +81,3 @@ router.beforeEach((to, from, next) => {
 });
 
 export default router;
-

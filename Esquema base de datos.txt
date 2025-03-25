@@ -1,0 +1,162 @@
+
+drop sucursal;
+drop region;
+drop roles;
+drop empleado;
+drop cliente;
+drop producto;
+drop pedido_boleta;
+drop pedido_boleta_detalle;
+
+
+CREATE TABLE region (
+id_region int not null auto_increment,
+nombre_region varchar(50) not null,
+primary key (id_region)
+);
+
+
+INSERT INTO region VALUES (null, 'Región de Arica y Parinacota');
+INSERT INTO region VALUES (null, 'Región de Tarapacá');
+INSERT INTO region VALUES (null, 'Región de Antofagasta');
+INSERT INTO region VALUES (null, 'Región de Atacama');
+INSERT INTO region VALUES (null, 'Región de Coquimbo');
+INSERT INTO region VALUES (null, 'Región de Valparaíso');
+INSERT INTO region VALUES (null, 'Región Metropolitana de Santiago');
+INSERT INTO region VALUES (null, 'Región del Libertador General Bernardo O’Higgins');
+INSERT INTO region VALUES (null, 'Región del Maule');
+INSERT INTO region VALUES (null, 'Región de Ñuble');
+INSERT INTO region VALUES (null, 'Región del Biobío');
+INSERT INTO region VALUES (null, 'Región de La Araucanía');
+INSERT INTO region VALUES (null, 'Región de Los Ríos');
+INSERT INTO region VALUES (null, 'Región de Los Lagos');
+INSERT INTO region VALUES (null, 'Región de Aysén del General Carlos Ibáñez del Campo');
+INSERT INTO region VALUES (null, 'Región de Magallanes y de la Antártica Chilena');
+
+
+CREATE TABLE sucursal (
+id_sucursal int not null auto_increment,
+id_region_suc int not null,
+fecha_registro DATE not null,
+hora_registro TIME not null,
+direccion varchar(100) not null,
+primary key (id_sucursal),
+foreign key (id_region_suc) references region(id_region)
+);
+
+INSERT INTO sucursal VALUES (NULL,7,DATE(NOW()),TIME(NOW()),'Tarapacá 1153');
+INSERT INTO sucursal VALUES (NULL,7,DATE(NOW()),TIME(NOW()),'Diez de Julio 1192');
+INSERT INTO sucursal VALUES (NULL,7,DATE(NOW()),TIME(NOW()),'San Diego 820');
+INSERT INTO sucursal VALUES (NULL,7,DATE(NOW()),TIME(NOW()),'Av. Manuel Antonio Matta 1088');
+INSERT INTO sucursal VALUES (NULL,6,DATE(NOW()),TIME(NOW()),'Pedro Montt 2309');
+INSERT INTO sucursal VALUES (NULL,6,DATE(NOW()),TIME(NOW()),'Morris 408');
+INSERT INTO sucursal VALUES (NULL,4,DATE(NOW()),TIME(NOW()),'Yerbas Buenas 536-A, 1530568 Copiapó');
+
+
+CREATE TABLE roles (
+id_rol int not null auto_increment,
+desc_rol varchar(30) not null,
+primary key (id_rol)
+);
+
+
+INSERT INTO roles VALUES (null,'Administrador');
+INSERT INTO roles VALUES (null,'Vendedor/Encargado');
+INSERT INTO roles VALUES (null,'Bodeguero');
+INSERT INTO roles VALUES (null,'Contador');
+
+
+CREATE TABLE empleado (
+id_empleado int not null auto_increment,
+id_sucursal_emp int not null,
+id_rol_emp int not null,
+fecha_registro DATE not null,
+hora_registro TIME not null,
+nombre_usuario varchar(30) not null unique,
+rut varchar(8) not null unique,
+digito_vef varchar(1) not null,
+contrasena varchar(30) not null,
+p_nombre varchar(40) not null,
+s_nombre varchar(40),
+p_apellido varchar(40) not null,
+s_apellido varchar(40),
+primary key (id_empleado),
+foreign key (id_sucursal_emp) references sucursal(id_sucursal),
+foreign key (id_rol_emp) references roles(id_rol)
+);
+
+
+INSERT INTO empleado VALUES (NULL,1,1,DATE(NOW()),TIME(NOW()),'administrador_sl_1','19325321','K','12345','Enrique',NULL,'Puente',NULL);
+INSERT INTO empleado VALUES (NULL,1,1,DATE(NOW()),TIME(NOW()),'vendedor_sl_1','22315321','3','12345','Maria',NULL,'González',NULL);
+INSERT INTO empleado VALUES (NULL,1,1,DATE(NOW()),TIME(NOW()),'bodeguero_sl_1','17825413','5','12345','Juan',NULL,'Salinas',NULL);
+INSERT INTO empleado VALUES (NULL,1,1,DATE(NOW()),TIME(NOW()),'contador_sl_1','21148721','1','12345','Sebastian',NULL,'Tralma',NULL);
+
+
+
+CREATE TABLE cliente (
+id_cliente int not null auto_increment,
+fecha_registro DATE not null,
+hora_registro TIME not null,
+correo_electronico varchar(50) not null,
+p_nombre varchar(40) not null,
+s_nombre varchar(40),
+p_apellido varchar(40) not null,
+s_apellido varchar(40),
+contrasena varchar(30) not null,
+primary key (id_cliente)
+);
+
+
+CREATE TABLE producto (
+id_producto int not null auto_increment,
+fecha_registro DATE not null,
+hora_registro TIME not null,
+foto_p TEXT,
+nombre_pro varchar(100) not null unique,
+desc_pro TEXT,
+precio int not null,
+primary key (id_producto)
+);
+
+
+CREATE TABLE promocion (
+id_promocion int not null auto_increment,
+id_producto_p int not null,
+fecha_registro DATE not null,
+hora_registro TIME not null,
+descuento int not null,
+fecha_inicio DATETIME not null,
+fecha_fin DATETIME not null,
+PRIMARY KEY (id_promocion),
+FOREIGN KEY (id_producto_p) REFERENCES producto(id_producto)
+);
+
+
+CREATE TABLE pedido_boleta (
+id_pedido int not null auto_increment,
+id_sucursal_p int not null,
+id_usuario_solicitante int not null,
+fecha_pedido DATE not null,
+hora_pedido TIME not null,
+estado_pedido varchar(10)
+monto_total int not null,
+PRIMARY KEY (id_pedido),
+FOREIGN KEY (id_sucursal_p) REFERENCES sucursal(id_sucursal),
+FOREIGN KEY (id_usuario_solicitante) REFERENCES cliente(id_cliente)
+);
+
+
+CREATE TABLE pedido_boleta_detalle (
+id_detalle int not null auto_increment,
+id_pedido_d int not null,
+id_producto int not null,
+precio_unitario int not null,
+cantidad int not null,
+subtotal int not null,
+PRIMARY KEY (id_detalle), 
+FOREIGN KEY (id_pedido) REFERENCES pedido_boleta(id_pedido),
+FOREIGN KEY (id_producto_d) REFERENCES producto(id_producto)
+);
+
+
+
